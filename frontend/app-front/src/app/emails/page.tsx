@@ -40,18 +40,15 @@ export default function EmailsPage() {
     }
   }
 
-  const handleLogout = () => {
-    // Clear any local storage and redirect to logout API
-    localStorage.clear()
+  const logout = () => {
     window.location.href = '/api/logout'
   }
 
   const fetchEmails = async () => {
+    setIsLoading(true)
+    setError("")
     try {
-      setIsLoading(true)
-      setError("")
-
-      const response = await fetch("/api/emails", {
+      const response = await fetch('/api/emails', {
         method: 'GET',
         credentials: 'include'
       })
@@ -151,7 +148,7 @@ export default function EmailsPage() {
               <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
               {isLoading ? "取得中..." : "更新"}
             </Button>
-            <Button onClick={handleLogout} variant="outline">
+            <Button onClick={logout} variant="outline">
               <LogOut className="mr-2 h-4 w-4" />
               ログアウト
             </Button>

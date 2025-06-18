@@ -60,8 +60,8 @@ export default function SearchPage() {
       setError("")
       setResult(null)
 
-      const response = await fetch("/api/query_emails", {
-        method: "POST",
+      const response = await fetch('/api/query_emails', {
+        method: 'POST',
         headers: {
           "Content-Type": "application/json",
         },

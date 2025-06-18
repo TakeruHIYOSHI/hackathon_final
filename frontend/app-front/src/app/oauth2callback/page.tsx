@@ -1,12 +1,12 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { RefreshCw, CheckCircle, XCircle } from "lucide-react"
 
-export default function OAuth2CallbackPage() {
+function OAuth2CallbackContent() {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
   const [error, setError] = useState("")
   const router = useRouter()
@@ -106,5 +106,32 @@ export default function OAuth2CallbackPage() {
         </Card>
       </div>
     </div>
+  )
+}
+
+export default function OAuth2CallbackPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          <Card>
+            <CardHeader className="text-center">
+              <div className="mx-auto w-16 h-16 mb-4 flex items-center justify-center">
+                <RefreshCw className="h-8 w-8 animate-spin text-blue-600" />
+              </div>
+              <CardTitle className="text-2xl font-bold">認証処理中...</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center">
+              <p className="text-gray-600">
+                Googleアカウントでの認証を処理しています。<br />
+                しばらくお待ちください...
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    }>
+      <OAuth2CallbackContent />
+    </Suspense>
   )
 } 

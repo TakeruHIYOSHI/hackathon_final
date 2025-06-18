@@ -47,8 +47,8 @@ export default function SummarizePage() {
       setError("")
       setSummary(null)
 
-      const response = await fetch("/api/summarize_recent", {
-        method: 'GET',
+      const response = await fetch('/api/summarize_recent', {
+        method: 'POST',
         credentials: 'include'
       })
       

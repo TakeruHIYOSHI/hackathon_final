@@ -19,7 +19,6 @@ export default function HomePage() {
 
   const checkAuthStatus = async () => {
     try {
-      // Check authentication by trying to access emails endpoint
       const emailsResponse = await fetch('/api/emails', {
         method: 'GET',
         credentials: 'include'
@@ -37,17 +36,8 @@ export default function HomePage() {
     }
   }
 
-  const handleLogin = async () => {
-    try {
-      setIsLoading(true)
-      setError("")
-
-      // Redirect to backend login endpoint
-      window.location.href = '/api/login'
-    } catch (err) {
-      setError("ログインに失敗しました。もう一度お試しください。")
-      setIsLoading(false)
-    }
+  const handleLogin = () => {
+    window.location.href = '/api/login'
   }
 
   if (isCheckingAuth) {
