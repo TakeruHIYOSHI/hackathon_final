@@ -34,7 +34,7 @@ export default function HistoryPage() {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('/api/', {
+      const response = await fetch('https://gmail-hackathon-633399924693.us-central1.run.app/', {
         method: 'GET',
         credentials: 'include'
       })
@@ -52,7 +52,7 @@ export default function HistoryPage() {
       setIsLoading(true)
       setError("")
 
-      const response = await fetch(`/api/query_history?limit=${limit}`, {
+      const response = await fetch(`https://gmail-hackathon-633399924693.us-central1.run.app/query_history?limit=${limit}`, {
         method: 'GET',
         credentials: 'include'
       })

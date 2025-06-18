@@ -41,14 +41,14 @@ export default function EmailsPage() {
   }
 
   const logout = () => {
-    window.location.href = '/api/logout'
+    window.location.href = 'https://gmail-hackathon-633399924693.us-central1.run.app/logout'
   }
 
   const fetchEmails = async () => {
     setIsLoading(true)
     setError("")
     try {
-      const response = await fetch('/api/emails', {
+      const response = await fetch('https://gmail-hackathon-633399924693.us-central1.run.app/emails', {
         method: 'GET',
         credentials: 'include'
       })

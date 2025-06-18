@@ -38,7 +38,7 @@ export default function TranslatePage() {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('/api/', {
+      const response = await fetch('https://gmail-hackathon-633399924693.us-central1.run.app/', {
         method: 'GET',
         credentials: 'include'
       })
@@ -57,7 +57,7 @@ export default function TranslatePage() {
       setError("")
       setResult(null)
 
-      const response = await fetch('/api/translate_english_emails', {
+      const response = await fetch('https://gmail-hackathon-633399924693.us-central1.run.app/translate_english_emails', {
         method: 'POST',
         credentials: 'include'
       })
