@@ -1,0 +1,71 @@
+services:
+  # MySQLコンテナ
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: encrypted_token
+      MYSQL_USER: mysqluser
+      MYSQL_PASSWORD: mysqlpassword
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./gmail_app/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # FastAPIアプリケーションコンテナ
+  fastapi:
+    build: ./gmail_app
+    container_name: gmail-app-container
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.env
+    environment:
+      - DB_USER=mysqluser
+      - DB_PASS=mysqlpassword
+      - DB_NAME=encrypted_token
+      - DB_HOST=mysql-container
+      - DB_PORT=3306
+      - USE_SQLITE=false
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
+    restart: unless-stopped
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --log-level debug
+    volumes:
+      - ./gmail_app/app:/app/app
+
+  # Adminerコンテナ
+  adminer:
+    image: adminer:latest
+    container_name: adminer-container
+    restart: always
+    environment:
+      ADMINER_DEFAULT_SERVER: mysql-container
+      ADMINER_DESIGN: dracula
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  mysql-data:
+    driver: local
+
+# Adminerログイン情報（ブラウザ上でのアクセスに使用）
+# Adminerにアクセスするには、以下の情報を使ってログインします：
+# システム: MySQL
+# サーバー: mysql-container
+# ユーザー: mysqluser
+# パスワード: mysqlpassword
+# データベース: encrypted_token 

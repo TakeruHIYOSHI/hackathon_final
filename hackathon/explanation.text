@@ -1,0 +1,13 @@
+1/環境に応じた設定の切り替え
+ENVIRONMENT環境変数でlocalまたはgcpを指定可能
+デフォルトはlocal
+
+2/ローカル開発環境用の設定
+CookieのsecureフラグをFalseに設定
+ローカルファイルからクライアントシークレットを読み込み
+環境変数から暗号化キーを取得
+
+3/GCP環境用の設定
+CookieのsecureフラグをTrueに設定
+Secret Managerからクライアントシークレットを読み込み
+Secret Managerから暗号化キーを取得
