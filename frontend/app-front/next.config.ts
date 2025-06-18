@@ -6,13 +6,9 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000'}/:path*`, // 環境変数を使用
+        destination: 'https://gmail-hackathon-633399924693.us-central1.run.app/:path*', // 直接URLを指定
       },
     ]
-  },
-  // 環境変数の設定
-  env: {
-    NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000',
   },
 };
 
