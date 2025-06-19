@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
     const cookieHeader = request.headers.get('cookie') || ''
     
     // Forward the request to the FastAPI backend
-    const backendUrl = 'http://localhost:8000/translate_english_emails'
+    const backendUrl = 'https://gmail-hackathon-633399924693.us-central1.run.app/translate_english_emails'
     
     const response = await fetch(backendUrl, {
       method: 'GET',
@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
       const errorText = await response.text()
       console.error('Backend error:', response.status, errorText)
       return NextResponse.json(
-        { error: 'Translation failed' },
+        { error: 'Failed to translate emails' },
         { status: response.status }
       )
     }

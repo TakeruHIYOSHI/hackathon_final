@@ -3,36 +3,33 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function GET(request: NextRequest) {
   try {
     // Get cookies from the request
-    const cookies = request.cookies
-    const sessionId = cookies.get('session_id')?.value
+    const cookieHeader = request.headers.get('cookie') || ''
     
-    // Call the FastAPI backend logout endpoint
-    const backendUrl = 'http://localhost:8000/logout'
-    const headers: HeadersInit = {}
+    // Forward the request to the FastAPI backend
+    const backendUrl = 'https://gmail-hackathon-633399924693.us-central1.run.app/logout'
     
-    // Forward the session cookie to backend if it exists
-    if (sessionId) {
-      headers['Cookie'] = `session_id=${sessionId}`
-    }
-    
-    // Call backend logout
-    await fetch(backendUrl, {
+    const response = await fetch(backendUrl, {
       method: 'GET',
-      headers
+      headers: {
+        'Cookie': cookieHeader,
+        'Content-Type': 'application/json',
+      },
     })
-    
-    // Create response that redirects to home page
-    const response = NextResponse.redirect(new URL('/', request.url))
-    
-    // Delete the session cookie on client side
-    response.cookies.delete('session_id')
-    
-    return response
+
+    if (!response.ok) {
+      return NextResponse.json(
+        { error: 'Logout failed' },
+        { status: response.status }
+      )
+    }
+
+    // Return success response
+    return NextResponse.json({ message: 'Logged out successfully' })
   } catch (error) {
     console.error('Logout error:', error)
-    // Even if backend call fails, still redirect and clear cookies
-    const response = NextResponse.redirect(new URL('/', request.url))
-    response.cookies.delete('session_id')
-    return response
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
   }
 } 

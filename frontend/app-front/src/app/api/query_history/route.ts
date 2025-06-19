@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     const limit = searchParams.get('limit') || '10'
     
     // Forward the request to the FastAPI backend
-    const backendUrl = `http://localhost:8000/query_history?limit=${limit}`
+    const backendUrl = `https://gmail-hackathon-633399924693.us-central1.run.app/query_history?limit=${limit}`
     
     const response = await fetch(backendUrl, {
       method: 'GET',

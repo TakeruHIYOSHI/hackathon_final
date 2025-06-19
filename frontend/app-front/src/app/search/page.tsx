@@ -34,7 +34,7 @@ export default function SearchPage() {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('https://gmail-hackathon-633399924693.us-central1.run.app/', {
+      const response = await fetch('/api/', {
         method: 'GET',
         credentials: 'include'
       })
@@ -60,7 +60,7 @@ export default function SearchPage() {
       setError("")
       setResult(null)
 
-      const response = await fetch('https://gmail-hackathon-633399924693.us-central1.run.app/query_emails', {
+      const response = await fetch('/api/query_emails', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",

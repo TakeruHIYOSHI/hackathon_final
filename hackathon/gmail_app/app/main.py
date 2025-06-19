@@ -34,7 +34,12 @@ app = FastAPI(title="Gmail API Application")
 # CORSミドルウェアの設定
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8001", "https://gmail-hackathon-frontend.web.app"],  # フロントエンドのURL
+    allow_origins=[
+        "http://localhost:8001", 
+        "https://gmail-hackathon-frontend.web.app",
+        "https://hackathon-final-dun.vercel.app",  # 元のVercelのフロントエンドURL
+        "https://hackathon-final-zunz.vercel.app"  # 新しいVercelのフロントエンドURL
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -54,10 +59,21 @@ IS_LOCAL = os.getenv('ENVIRONMENT', 'local') == 'local'
 REDIRECT_URI = os.getenv('REDIRECT_URI', 'http://localhost:8000/oauth2callback')
 FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:8001')
 
+# デバッグ: 環境変数の確認
+logger.info(f"=== 環境設定デバッグ ===")
+logger.info(f"ENVIRONMENT: {os.getenv('ENVIRONMENT', 'local')}")
+logger.info(f"IS_LOCAL: {IS_LOCAL}")
+logger.info(f"REDIRECT_URI: {REDIRECT_URI}")
+logger.info(f"FRONTEND_URL: {FRONTEND_URL}")
+
 # Cookie設定
 COOKIE_SECURE = not IS_LOCAL  # ローカル開発時はFalse、GCPデプロイ時はTrue
-COOKIE_SAMESITE = "lax"
+COOKIE_SAMESITE = "lax" if IS_LOCAL else "none"  # ローカル開発時はlax、GCPデプロイ時はnone（クロスオリジン対応）
 COOKIE_MAX_AGE = 3600  # 1時間
+
+logger.info(f"COOKIE_SECURE: {COOKIE_SECURE}")
+logger.info(f"COOKIE_SAMESITE: {COOKIE_SAMESITE}")
+logger.info(f"COOKIE_MAX_AGE: {COOKIE_MAX_AGE}")
 
 @app.get("/")
 async def root():
@@ -196,7 +212,17 @@ async def get_emails(
 ) -> List[Dict[str, Any]]:
     """ユーザーのメールを取得する"""
     try:
+        # デバッグ情報を追加
+        logger.info("=== /emails エンドポイント デバッグ情報 ===")
         logger.info(f"セッションID: {session_id}")
+        logger.info(f"環境設定: IS_LOCAL={IS_LOCAL}, ENVIRONMENT={os.getenv('ENVIRONMENT', 'local')}")
+        logger.info(f"Cookie設定: SECURE={COOKIE_SECURE}, SAMESITE={COOKIE_SAMESITE}")
+        
+        # リクエストヘッダーのデバッグ
+        cookies_header = request.headers.get("cookie")
+        logger.info(f"リクエストヘッダー Cookie: {cookies_header}")
+        logger.info(f"リクエスト元: {request.headers.get('origin', 'Unknown')}")
+        logger.info(f"User-Agent: {request.headers.get('user-agent', 'Unknown')}")
         
         if not session_id:
             logger.error("セッションIDが設定されていません")

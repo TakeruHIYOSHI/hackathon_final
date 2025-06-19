@@ -26,8 +26,8 @@ export default function OAuth2CallbackContent() {
         return
       }
 
-      // Check if authentication was successful by trying to access emails
-      const response = await fetch('https://gmail-hackathon-633399924693.us-central1.run.app/emails', {
+      // 認証が成功したかをテストするため、メールエンドポイントにアクセス
+      const response = await fetch('/api/emails', {
         method: 'GET',
         credentials: 'include'
       })

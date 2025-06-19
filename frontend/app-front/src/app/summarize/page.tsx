@@ -28,7 +28,7 @@ export default function SummarizePage() {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('https://gmail-hackathon-633399924693.us-central1.run.app/', {
+      const response = await fetch('/api/', {
         method: 'GET',
         credentials: 'include'
       })
@@ -41,14 +41,14 @@ export default function SummarizePage() {
     }
   }
 
-  const generateSummary = async () => {
+  const handleSummarize = async () => {
     try {
       setIsLoading(true)
       setError("")
       setSummary(null)
 
-      const response = await fetch('https://gmail-hackathon-633399924693.us-central1.run.app/summarize_recent', {
-        method: 'POST',
+      const response = await fetch('/api/summarize_recent', {
+        method: 'GET',
         credentials: 'include'
       })
       
@@ -93,7 +93,7 @@ export default function SummarizePage() {
             <CardDescription>最新のメールを分析し、重要なポイントを簡潔にまとめます</CardDescription>
           </CardHeader>
           <CardContent className="text-center">
-            <Button onClick={generateSummary} disabled={isLoading} size="lg" className="w-full sm:w-auto">
+            <Button onClick={handleSummarize} disabled={isLoading} size="lg" className="w-full sm:w-auto">
               {isLoading ? (
                 <div className="flex items-center">
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>

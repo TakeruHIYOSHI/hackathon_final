@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     
     // Forward the request to the FastAPI backend
-    const backendUrl = 'http://localhost:8000/query_emails'
+    const backendUrl = 'https://gmail-hackathon-633399924693.us-central1.run.app/query_emails'
     
     const response = await fetch(backendUrl, {
       method: 'POST',
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       const errorText = await response.text()
       console.error('Backend error:', response.status, errorText)
       return NextResponse.json(
-        { error: 'Query failed' },
+        { error: 'Failed to query emails' },
         { status: response.status }
       )
     }

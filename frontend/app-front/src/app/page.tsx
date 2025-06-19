@@ -19,7 +19,7 @@ export default function HomePage() {
 
   const checkAuthStatus = async () => {
     try {
-      const emailsResponse = await fetch('https://gmail-hackathon-633399924693.us-central1.run.app/emails', {
+      const emailsResponse = await fetch('/api/emails', {
         method: 'GET',
         credentials: 'include'
       })
@@ -37,7 +37,7 @@ export default function HomePage() {
   }
 
   const handleLogin = () => {
-    window.location.href = 'https://gmail-hackathon-633399924693.us-central1.run.app/login'
+    window.location.href = '/api/login'
   }
 
   if (isCheckingAuth) {

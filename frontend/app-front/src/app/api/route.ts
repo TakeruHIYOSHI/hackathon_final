@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
     const cookieHeader = request.headers.get('cookie') || ''
     
     // Forward the request to the FastAPI backend root endpoint
-    const backendUrl = 'http://localhost:8000/'
+    const backendUrl = 'https://gmail-hackathon-633399924693.us-central1.run.app/'
     
     const response = await fetch(backendUrl, {
       method: 'GET',

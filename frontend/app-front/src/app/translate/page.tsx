@@ -38,7 +38,7 @@ export default function TranslatePage() {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('https://gmail-hackathon-633399924693.us-central1.run.app/', {
+      const response = await fetch('/api/', {
         method: 'GET',
         credentials: 'include'
       })
@@ -51,14 +51,14 @@ export default function TranslatePage() {
     }
   }
 
-  const translateEmails = async () => {
+  const handleTranslate = async () => {
     try {
       setIsLoading(true)
       setError("")
-      setResult(null)
+      setTranslations([])
 
-      const response = await fetch('https://gmail-hackathon-633399924693.us-central1.run.app/translate_english_emails', {
-        method: 'POST',
+      const response = await fetch('/api/translate_english_emails', {
+        method: 'GET',
         credentials: 'include'
       })
       
@@ -117,7 +117,7 @@ export default function TranslatePage() {
             <CardDescription>最新の英語メールを検出し、GPTで高品質な日本語翻訳を提供します</CardDescription>
           </CardHeader>
           <CardContent className="text-center">
-            <Button onClick={translateEmails} disabled={isLoading} size="lg" className="w-full sm:w-auto">
+            <Button onClick={handleTranslate} disabled={isLoading} size="lg" className="w-full sm:w-auto">
               {isLoading ? (
                 <div className="flex items-center">
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
