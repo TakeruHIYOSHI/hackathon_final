@@ -188,7 +188,16 @@ async def oauth2callback(
             raise HTTPException(status_code=500, detail="Failed to save credentials")
         
         # セッションIDをCookieに設定
-        response = RedirectResponse(url=f"{FRONTEND_URL}/oauth2callback")
+        logger.info("=== OAuth2 Callback デバッグ情報 ===")
+        logger.info(f"セッションIDをCookieに設定: {state}")
+        logger.info(f"環境設定: IS_LOCAL={IS_LOCAL}, ENVIRONMENT={os.getenv('ENVIRONMENT', 'local')}")
+        logger.info(f"Cookie設定: SECURE={COOKIE_SECURE}, SAMESITE={COOKIE_SAMESITE}")
+        
+        frontend_url = FRONTEND_URL.rstrip('/')  # 末尾のスラッシュを削除
+        redirect_url = f"{frontend_url}/oauth2callback"
+        logger.info(f"リダイレクト先: {redirect_url}")
+        
+        response = RedirectResponse(url=redirect_url)
         response.set_cookie(
             key="session_id",
             value=state,
@@ -197,6 +206,8 @@ async def oauth2callback(
             samesite=COOKIE_SAMESITE,
             max_age=COOKIE_MAX_AGE
         )
+        
+        logger.info(f"Cookieを設定しました: session_id={state}")
         
         return response
     except Exception as e:
