@@ -119,7 +119,7 @@ export default function HomePage() {
             </div>
 
             <div className="text-xs text-gray-500 text-center">
-              ログインすることで、プライバシーポリシーおよび利用規約に同意したものとみなされます。
+              ログインすることで、アプリケーションの使用に同意したものとみなされます
             </div>
           </CardContent>
         </Card>
