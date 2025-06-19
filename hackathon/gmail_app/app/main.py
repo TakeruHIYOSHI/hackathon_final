@@ -115,6 +115,9 @@ async def login(response: Response):
             max_age=COOKIE_MAX_AGE
         )
         
+        logger.info(f"ログイン時のCookie設定: session_id={user_id}")
+        logger.info(f"Cookie詳細設定: httponly=True, secure={COOKIE_SECURE}, samesite={COOKIE_SAMESITE}, max_age={COOKIE_MAX_AGE}")
+        
         return RedirectResponse(url=auth_url)
     except Exception as e:
         logger.error(f"ログインエラー: {e}")
@@ -192,8 +195,10 @@ async def oauth2callback(
         logger.info(f"セッションIDをCookieに設定: {state}")
         logger.info(f"環境設定: IS_LOCAL={IS_LOCAL}, ENVIRONMENT={os.getenv('ENVIRONMENT', 'local')}")
         logger.info(f"Cookie設定: SECURE={COOKIE_SECURE}, SAMESITE={COOKIE_SAMESITE}")
+        logger.info(f"元のFRONTEND_URL: '{FRONTEND_URL}'")
         
         frontend_url = FRONTEND_URL.rstrip('/')  # 末尾のスラッシュを削除
+        logger.info(f"処理後のfrontend_url: '{frontend_url}'")
         redirect_url = f"{frontend_url}/oauth2callback"
         logger.info(f"リダイレクト先: {redirect_url}")
         
@@ -208,6 +213,7 @@ async def oauth2callback(
         )
         
         logger.info(f"Cookieを設定しました: session_id={state}")
+        logger.info(f"Cookie詳細設定: httponly=True, secure={COOKIE_SECURE}, samesite={COOKIE_SAMESITE}, max_age={COOKIE_MAX_AGE}")
         
         return response
     except Exception as e:

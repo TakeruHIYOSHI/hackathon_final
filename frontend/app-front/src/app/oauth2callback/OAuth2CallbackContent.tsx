@@ -18,6 +18,12 @@ export default function OAuth2CallbackContent() {
 
   const handleCallback = async () => {
     try {
+      // デバッグ: Cookieの状況を確認
+      console.log('=== OAuth2 Callback Debug ===')
+      console.log('All cookies:', document.cookie)
+      console.log('Location:', window.location.href)
+      console.log('Search params:', Object.fromEntries(searchParams.entries()))
+      
       // Check if there's an error parameter from OAuth
       const errorParam = searchParams.get('error')
       if (errorParam) {
@@ -27,10 +33,14 @@ export default function OAuth2CallbackContent() {
       }
 
       // 認証が成功したかをテストするため、メールエンドポイントにアクセス
+      console.log('Fetching /api/emails to test authentication...')
       const response = await fetch('/api/emails', {
         method: 'GET',
         credentials: 'include'
       })
+
+      console.log('Response status:', response.status)
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()))
 
       if (response.ok) {
         setStatus('success')
@@ -39,6 +49,8 @@ export default function OAuth2CallbackContent() {
           router.push('/emails')
         }, 2000)
       } else {
+        const errorText = await response.text()
+        console.error('API error:', errorText)
         throw new Error('認証に失敗しました')
       }
     } catch (err) {
