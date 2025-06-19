@@ -55,7 +55,7 @@ export default function TranslatePage() {
     try {
       setIsLoading(true)
       setError("")
-      setTranslations([])
+      setResult(null)
 
       const response = await fetch('/api/translate_english_emails', {
         method: 'GET',
